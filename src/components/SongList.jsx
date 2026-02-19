@@ -3,10 +3,9 @@ import { getSongs } from "../api/songsApi";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 
 const SongList = () => {
-  const [songs, setSongs] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
-  const { playSong, currentSong } = useAudioPlayer();
+  const { playSong, currentSong, songs, setSongs } = useAudioPlayer();
 
   useEffect(() => {
     let isMounted = true;

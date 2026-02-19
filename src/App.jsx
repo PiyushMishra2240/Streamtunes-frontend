@@ -16,7 +16,7 @@ function App() {
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-10 space-y-10 max-w-5xl mx-auto w-full">
+        <div className="flex-1 p-10 pb-28 space-y-10 max-w-5xl mx-auto w-full">
           <UploadForm />
           <SongList />
         </div>
