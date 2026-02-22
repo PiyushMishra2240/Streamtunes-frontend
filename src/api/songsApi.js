@@ -11,8 +11,8 @@ apiClient.interceptors.request.use((config) => {
     const stored = localStorage.getItem("streamtunes_user");
     if (stored) {
       const { token } = JSON.parse(stored);
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+      if (token && config.headers) {
+        config.headers.set("Authorization", `Bearer ${token}`);
       }
     }
   } catch {
@@ -28,11 +28,11 @@ export const uploadSong = async (formData) => {
 };
 
 export const getSongs = async (page = 0, size = 10) => {
-  return apiClient.get(`?page=${page}&size=${size}`);
+  return apiClient.get("", { params: { page, size } });
 };
 
 export const searchSongs = async (query, page = 0, size = 10) => {
-  return apiClient.get(`/search?q=${query}&page=${page}&size=${size}`);
+  return apiClient.get("/search", { params: { q: query, page, size } });
 };
 
 export const streamUrl = (id) => {
