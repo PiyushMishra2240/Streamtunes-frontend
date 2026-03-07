@@ -31,6 +31,10 @@ export const getSongs = async (page = 0, size = 10) => {
   return apiClient.get("", { params: { page, size } });
 };
 
+export const getUserSongs = async (page = 0, size = 10) => {
+  return apiClient.get("/user", { params: { page, size } });
+};
+
 export const searchSongs = async (query, page = 0, size = 10) => {
   return apiClient.get("/search", { params: { q: query, page, size } });
 };

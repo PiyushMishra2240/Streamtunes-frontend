@@ -1,0 +1,155 @@
+import { useEffect, useState } from "react";
+import { getUserSongs } from "../api/songsApi";
+import { useAudioPlayer } from "../context/AudioPlayerContext";
+import UploadForm from "./UploadForm";
+
+const UserSongList = () => {
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
+  const { playSong, currentSong, songs, setSongs } = useAudioPlayer();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchSongs = async () => {
+      try {
+        setLoading(true);
+        const response = await getUserSongs(page, 10);
+        const data = response.data;
+
+        if (isMounted) {
+          setSongs(data.songs);
+          setTotalPages(data.totalPages);
+        }
+      } catch (err) {
+        console.error("Failed to fetch user songs", err);
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchSongs();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [page, refreshKey]);
+
+  const handleUploadComplete = () => {
+    setRefreshKey((k) => k + 1);
+  };
+
+  const isPlaying = (song) => currentSong?.id === song.id;
+
+  return (
+    <div className="space-y-8">
+      <UploadForm refresh={handleUploadComplete} />
+
+      <div className="bg-[#181818] p-8 rounded-2xl border border-gray-800 shadow-xl">
+        <div className="flex items-center gap-3 mb-6">
+          <span className="text-2xl">🎵</span>
+          <h2 className="text-xl font-semibold">Your Songs</h2>
+        </div>
+
+        {loading && (
+          <div className="flex justify-center py-8">
+            <div className="animate-spin h-8 w-8 border-2 border-green-500 border-t-transparent rounded-full" />
+          </div>
+        )}
+
+        <div className="flex flex-col gap-2">
+          {songs.map((song, index) => {
+            const active = isPlaying(song);
+            return (
+              <div
+                key={song.id}
+                onClick={() => playSong(song)}
+                className={`
+                  flex items-center gap-4 px-5 py-4 rounded-lg cursor-pointer
+                  transition-all duration-200 group
+                  ${active
+                    ? "bg-green-500/15 border-l-4 border-green-400 shadow-lg shadow-green-500/5"
+                    : "bg-[#242424] border-l-4 border-transparent hover:bg-[#2e2e2e] hover:border-green-500/30"
+                  }
+                `}
+              >
+                <span className={`
+                  w-8 text-center text-sm font-mono shrink-0
+                  ${active ? "text-green-400 font-bold" : "text-gray-500 group-hover:text-gray-300"}
+                `}>
+                  {active ? "♫" : index + 1 + page * 10}
+                </span>
+
+                <div className="flex-1 min-w-0">
+                  <p className={`
+                    font-medium truncate
+                    ${active ? "text-green-300" : "text-white"}
+                  `}>
+                    {song.title}
+                  </p>
+                  <p className="text-sm text-gray-400 truncate">{song.artist}</p>
+                </div>
+
+                {song.album && (
+                  <span className="text-xs text-gray-500 hidden sm:block truncate max-w-[120px]">
+                    {song.album}
+                  </span>
+                )}
+
+                {active && (
+                  <span className="text-xs text-green-400 font-medium px-3 py-1 bg-green-500/10 rounded-full animate-pulse shrink-0">
+                    Now Playing
+                  </span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {!loading && songs.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-4xl mb-4">🎶</p>
+            <p className="text-gray-400 text-lg mb-2">No songs yet</p>
+            <p className="text-gray-500 text-sm">Upload your first song above to get started!</p>
+          </div>
+        )}
+
+        {totalPages > 1 && (
+          <div className="flex justify-between items-center mt-6">
+            <button
+              disabled={page === 0}
+              onClick={() => setPage((p) => p - 1)}
+              className={`px-5 py-2 rounded-full font-medium transition
+                ${page === 0
+                  ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                  : "bg-green-500 hover:bg-green-400 text-black"
+                }`}
+            >
+              ← Previous
+            </button>
+
+            <span className="text-sm text-gray-500">Page {page + 1} of {totalPages}</span>
+
+            <button
+              disabled={page >= totalPages - 1}
+              onClick={() => setPage((p) => p + 1)}
+              className={`px-5 py-2 rounded-full font-medium transition
+                ${page >= totalPages - 1
+                  ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                  : "bg-green-500 hover:bg-green-400 text-black"
+                }`}
+            >
+              Next →
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default UserSongList;

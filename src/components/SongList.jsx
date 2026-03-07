@@ -5,6 +5,7 @@ import { useAudioPlayer } from "../context/AudioPlayerContext";
 const SongList = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [totalPages, setTotalPages] = useState(0);
   const { playSong, currentSong, songs, setSongs } = useAudioPlayer();
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const SongList = () => {
 
         if (isMounted) {
           setSongs(data.songs);
+          setTotalPages(data.totalPages);
         }
       } catch (err) {
         console.error("Failed to fetch songs", err);
@@ -39,7 +41,10 @@ const SongList = () => {
 
   return (
     <div className="bg-[#181818] p-8 rounded-2xl border border-gray-800 shadow-xl">
-      <h2 className="text-xl font-semibold mb-6">Songs</h2>
+      <div className="flex items-center gap-3 mb-6">
+        <span className="text-2xl">🌍</span>
+        <h2 className="text-xl font-semibold">Global Songs</h2>
+      </div>
 
       {loading && (
         <div className="flex justify-center py-8">
@@ -94,28 +99,35 @@ const SongList = () => {
         <p className="text-gray-500 text-center py-8">No songs found</p>
       )}
 
-      <div className="flex justify-between items-center mt-6">
-        <button
-          disabled={page === 0}
-          onClick={() => setPage((p) => p - 1)}
-          className={`px-5 py-2 rounded-full font-medium transition
-            ${page === 0
-              ? "bg-gray-700 text-gray-500 cursor-not-allowed"
-              : "bg-green-500 hover:bg-green-400 text-black"
-            }`}
-        >
-          ← Previous
-        </button>
+      {totalPages > 1 && (
+        <div className="flex justify-between items-center mt-6">
+          <button
+            disabled={page === 0}
+            onClick={() => setPage((p) => p - 1)}
+            className={`px-5 py-2 rounded-full font-medium transition
+              ${page === 0
+                ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-400 text-black"
+              }`}
+          >
+            ← Previous
+          </button>
 
-        <span className="text-sm text-gray-500">Page {page + 1}</span>
+          <span className="text-sm text-gray-500">Page {page + 1} of {totalPages}</span>
 
-        <button
-          onClick={() => setPage((p) => p + 1)}
-          className="px-5 py-2 rounded-full bg-green-500 hover:bg-green-400 text-black font-medium transition"
-        >
-          Next →
-        </button>
-      </div>
+          <button
+            disabled={page >= totalPages - 1}
+            onClick={() => setPage((p) => p + 1)}
+            className={`px-5 py-2 rounded-full font-medium transition
+              ${page >= totalPages - 1
+                ? "bg-gray-700 text-gray-500 cursor-not-allowed"
+                : "bg-green-500 hover:bg-green-400 text-black"
+              }`}
+          >
+            Next →
+          </button>
+        </div>
+      )}
     </div>
   );
 };

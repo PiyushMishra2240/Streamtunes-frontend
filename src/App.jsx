@@ -1,7 +1,8 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import UploadForm from "./components/UploadForm";
+import UserSongList from "./components/UserSongList";
 import SongList from "./components/SongList";
 import Player from "./components/Player";
+import Sidebar from "./components/Sidebar";
 import LoginPage from "./components/LoginPage";
 import { useAuth } from "./context/AuthContext";
 
@@ -29,7 +30,7 @@ function AppShell() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <div className="px-8 py-6 bg-gradient-to-r from-green-500 to-emerald-700 shadow-lg flex items-center justify-between">
+      <div className="px-8 py-5 bg-gradient-to-r from-green-500 to-emerald-700 shadow-lg flex items-center justify-between shrink-0">
         <h1 className="text-3xl font-bold tracking-wide">
           🎵 StreamTunes
         </h1>
@@ -57,10 +58,18 @@ function AppShell() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 p-10 pb-28 space-y-10 max-w-5xl mx-auto w-full">
-        <UploadForm />
-        <SongList />
+      {/* Main: Sidebar + Content */}
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+        <main className="flex-1 overflow-y-auto p-10 pb-28">
+          <div className="max-w-4xl mx-auto">
+            <Routes>
+              <Route path="/" element={<UserSongList />} />
+              <Route path="/global" element={<SongList />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        </main>
       </div>
 
       <Player />
