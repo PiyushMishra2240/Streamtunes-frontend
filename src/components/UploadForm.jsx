@@ -26,17 +26,17 @@ const UploadForm = ({ refresh }) => {
   };
 
   return (
-    <div className="bg-[#181818] p-8 rounded-2xl shadow-xl border border-gray-800">
-      <form onSubmit={handleSubmit} className="space-y-2">
+    <div className="bg-[#181818] p-4 sm:p-8 rounded-2xl shadow-xl border border-gray-800">
+      <form onSubmit={handleSubmit} className="space-y-3">
         <label className="block cursor-pointer bg-[#181818] border border-gray-700 rounded-lg px-4 py-3 hover:bg-[#242424] transition">
         <span className="text-sm text-gray-400">Choose audio file</span>
           <input type="file" 
-          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2"
+          className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 sm:px-4 py-2 text-sm"
           onChange={(e) => setFile(e.target.files[0])} 
           required />
         </label>
         <input 
-          className="w-full bg-[#242424] border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full bg-[#242424] border border-gray-700 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-green-500"
           type="text"
           placeholder="Title"
           value={title}
@@ -44,7 +44,7 @@ const UploadForm = ({ refresh }) => {
           required
         />
         <input
-          className="w-full bg-[#242424] border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full bg-[#242424] border border-gray-700 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-green-500"
           type="text"
           placeholder="Artist"
           value={artist}
@@ -52,14 +52,14 @@ const UploadForm = ({ refresh }) => {
           required
         />
         <input
-          className="w-full bg-[#242424] border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+          className="w-full bg-[#242424] border border-gray-700 rounded-lg px-3 sm:px-4 py-2.5 sm:py-3 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-green-500"
           type="text"
           placeholder="Album"
           value={album}
           onChange={(e) => setAlbum(e.target.value)}
         />
         <button type="submit"
-          className="bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-3 rounded-full transition">
+          className="w-full sm:w-auto bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 sm:py-3 rounded-full transition">
           Upload
         </button>
       </form>

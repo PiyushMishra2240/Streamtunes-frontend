@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import UserSongList from "./components/UserSongList";
 import SongList from "./components/SongList";
@@ -16,6 +17,7 @@ function ProtectedRoute({ children }) {
 
 function AppShell() {
   const { user, logout } = useAuth();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const getDisplayName = (username) => {
     if (!username) return "";
@@ -30,17 +32,29 @@ function AppShell() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <div className="px-8 py-5 bg-gradient-to-r from-green-500 to-emerald-700 shadow-lg flex items-center justify-between shrink-0">
-        <h1 className="text-3xl font-bold tracking-wide">
-          🎵 StreamTunes
-        </h1>
-        <div className="flex items-center gap-4">
-          <span className="text-sm font-medium opacity-90">
+      <div className="px-4 sm:px-8 py-4 sm:py-5 bg-gradient-to-r from-green-500 to-emerald-700 shadow-lg flex items-center justify-between shrink-0 gap-2">
+        <div className="flex items-center gap-3">
+          {/* Hamburger — mobile only */}
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="lg:hidden p-1.5 rounded-lg hover:bg-white/10 transition"
+            aria-label="Open menu"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          </button>
+          <h1 className="text-xl sm:text-3xl font-bold tracking-wide whitespace-nowrap">
+            🎵 StreamTunes
+          </h1>
+        </div>
+        <div className="flex items-center gap-2 sm:gap-4">
+          <span className="text-xs sm:text-sm font-medium opacity-90 hidden xs:inline">
             👋 {displayName}
           </span>
           <button
             onClick={logout}
-            className="px-4 py-1.5 text-sm font-medium rounded-full transition-all duration-200 cursor-pointer"
+            className="px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-full transition-all duration-200 cursor-pointer shrink-0"
             style={{
               background: "rgba(0, 0, 0, 0.2)",
               border: "1px solid rgba(255, 255, 255, 0.2)",
@@ -60,8 +74,8 @@ function AppShell() {
 
       {/* Main: Sidebar + Content */}
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto p-10 pb-28">
+        <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 pb-28">
           <div className="max-w-4xl mx-auto">
             <Routes>
               <Route path="/" element={<UserSongList />} />

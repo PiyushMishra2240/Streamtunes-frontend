@@ -49,7 +49,7 @@ const UserSongList = () => {
     <div className="space-y-8">
       <UploadForm refresh={handleUploadComplete} />
 
-      <div className="bg-[#181818] p-8 rounded-2xl border border-gray-800 shadow-xl">
+      <div className="bg-[#181818] p-4 sm:p-8 rounded-2xl border border-gray-800 shadow-xl">
         <div className="flex items-center gap-3 mb-6">
           <span className="text-2xl">🎵</span>
           <h2 className="text-xl font-semibold">Your Songs</h2>
@@ -69,7 +69,7 @@ const UserSongList = () => {
                 key={song.id}
                 onClick={() => playSong(song)}
                 className={`
-                  flex items-center gap-4 px-5 py-4 rounded-lg cursor-pointer
+                  flex items-center gap-3 sm:gap-4 px-3 sm:px-5 py-3 sm:py-4 rounded-lg cursor-pointer
                   transition-all duration-200 group
                   ${active
                     ? "bg-green-500/15 border-l-4 border-green-400 shadow-lg shadow-green-500/5"
@@ -101,7 +101,7 @@ const UserSongList = () => {
                 )}
 
                 {active && (
-                  <span className="text-xs text-green-400 font-medium px-3 py-1 bg-green-500/10 rounded-full animate-pulse shrink-0">
+                  <span className="text-xs text-green-400 font-medium px-2 sm:px-3 py-1 bg-green-500/10 rounded-full animate-pulse shrink-0 hidden xs:inline">
                     Now Playing
                   </span>
                 )}
@@ -123,7 +123,7 @@ const UserSongList = () => {
             <button
               disabled={page === 0}
               onClick={() => setPage((p) => p - 1)}
-              className={`px-5 py-2 rounded-full font-medium transition
+              className={`px-3 sm:px-5 py-2 rounded-full font-medium text-sm sm:text-base transition
                 ${page === 0
                   ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                   : "bg-green-500 hover:bg-green-400 text-black"
@@ -137,7 +137,7 @@ const UserSongList = () => {
             <button
               disabled={page >= totalPages - 1}
               onClick={() => setPage((p) => p + 1)}
-              className={`px-5 py-2 rounded-full font-medium transition
+              className={`px-3 sm:px-5 py-2 rounded-full font-medium text-sm sm:text-base transition
                 ${page >= totalPages - 1
                   ? "bg-gray-700 text-gray-500 cursor-not-allowed"
                   : "bg-green-500 hover:bg-green-400 text-black"
