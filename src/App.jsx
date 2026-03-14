@@ -6,6 +6,7 @@ import Player from "./components/Player";
 import Sidebar from "./components/Sidebar";
 import LoginPage from "./components/LoginPage";
 import { useAuth } from "./context/AuthContext";
+import { useAudioPlayer } from "./context/AudioPlayerContext";
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -17,6 +18,7 @@ function ProtectedRoute({ children }) {
 
 function AppShell() {
   const { user, logout } = useAuth();
+  const { stopPlayback } = useAudioPlayer();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const getDisplayName = (username) => {
@@ -53,7 +55,7 @@ function AppShell() {
             👋 {displayName}
           </span>
           <button
-            onClick={logout}
+            onClick={() => { stopPlayback(); logout(); }}
             className="px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium rounded-full transition-all duration-200 cursor-pointer shrink-0"
             style={{
               background: "rgba(0, 0, 0, 0.2)",

@@ -23,9 +23,14 @@ export const AudioPlayerProvider = ({ children }) => {
     setCurrentSong(songs[prevIndex]);
   }, [songs, currentSong]);
 
+  const stopPlayback = useCallback(() => {
+    setCurrentSong(null);
+    setSongs([]);
+  }, []);
+
   return (
     <AudioPlayerContext.Provider
-      value={{ currentSong, songs, setSongs, playSong, playNext, playPrevious }}
+      value={{ currentSong, songs, setSongs, playSong, playNext, playPrevious, stopPlayback }}
     >
       {children}
     </AudioPlayerContext.Provider>
