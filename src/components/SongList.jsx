@@ -82,7 +82,17 @@ const SongList = () => {
                 `}>
                   {song.title}
                 </p>
-                <p className="text-sm text-gray-400 truncate">{song.artist}</p>
+                <div className="flex items-center gap-2">
+                  <p className="text-sm text-gray-400 truncate">{song.artist}</p>
+                  {song.uploadedBy && (
+                    <>
+                      <span className="text-gray-600 text-xs">•</span>
+                      <span className="text-xs text-gray-500 italic truncate max-w-[120px]">
+                        by @{song.uploadedBy}
+                      </span>
+                    </>
+                  )}
+                </div>
               </div>
 
               {active && (

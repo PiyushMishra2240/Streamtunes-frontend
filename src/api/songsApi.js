@@ -39,6 +39,10 @@ export const searchSongs = async (query, page = 0, size = 10) => {
   return apiClient.get("/search", { params: { q: query, page, size } });
 };
 
+export const toggleGlobalStatus = async (songId) => {
+  return apiClient.patch(`/${songId}/toggle-global`);
+};
+
 export const streamUrl = (id) => {
   const stored = localStorage.getItem("streamtunes_user");
   let tokenParam = "";
