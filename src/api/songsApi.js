@@ -47,6 +47,12 @@ export const toggleLikeStatus = async (songId) => {
   return apiClient.post(`/${songId}/like`);
 };
 
+export const getAnalytics = async (sortBy = 'likes', page = 0, size = 10) => {
+  return apiClient.get('/analytics', {
+    params: { sortBy, page, size }
+  });
+};
+
 export const streamUrl = (id) => {
   const stored = localStorage.getItem("streamtunes_user");
   let tokenParam = "";

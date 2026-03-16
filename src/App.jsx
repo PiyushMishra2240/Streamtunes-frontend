@@ -4,6 +4,7 @@ import UserSongList from "./components/UserSongList";
 import SongList from "./components/SongList";
 import Player from "./components/Player";
 import Sidebar from "./components/Sidebar";
+import Analytics from "./components/Analytics";
 import LoginPage from "./components/LoginPage";
 import { useAuth } from "./context/AuthContext";
 import { useAudioPlayer } from "./context/AudioPlayerContext";
@@ -82,6 +83,7 @@ function AppShell() {
             <Routes>
               <Route path="/" element={<UserSongList />} />
               <Route path="/global" element={<SongList />} />
+              <Route path="/analytics" element={<Analytics />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </div>

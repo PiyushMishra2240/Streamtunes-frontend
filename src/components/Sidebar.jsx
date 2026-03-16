@@ -59,6 +59,10 @@ const Sidebar = ({ isOpen, onClose }) => {
               <span className="text-lg">🌍</span>
               <span>Global Songs</span>
             </NavLink>
+            <NavLink to="/analytics" className={linkClass} onClick={handleNavClick}>
+              <span className="text-lg">📊</span>
+              <span>Analytics</span>
+            </NavLink>
           </nav>
         </div>
       </aside>
