@@ -32,6 +32,7 @@ const Player = () => {
         <audio
           controls
           autoPlay
+          crossOrigin="use-credentials"
           key={currentSong?.id}
           className="w-full max-w-[20rem] sm:max-w-[24rem] accent-green-500"
           src={currentSong ? `http://localhost:8080/api/songs/${currentSong.id}/stream` : undefined}

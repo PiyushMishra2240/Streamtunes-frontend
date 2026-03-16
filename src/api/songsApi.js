@@ -4,6 +4,7 @@ const API_BASE = "http://localhost:8080/api/songs";
 
 const apiClient = axios.create({
   baseURL: API_BASE,
+  withCredentials: true,
 });
 
 apiClient.interceptors.request.use((config) => {
@@ -54,17 +55,5 @@ export const getAnalytics = async (sortBy = 'likes', page = 0, size = 10) => {
 };
 
 export const streamUrl = (id) => {
-  const stored = localStorage.getItem("streamtunes_user");
-  let tokenParam = "";
-  try {
-    if (stored) {
-      const { token } = JSON.parse(stored);
-      if (token) {
-        tokenParam = `?token=${token}`;
-      }
-    }
-  } catch {
-    // ignore
-  }
-  return `${API_BASE}/${id}/stream${tokenParam}`;
+  return `${API_BASE}/${id}/stream`;
 };

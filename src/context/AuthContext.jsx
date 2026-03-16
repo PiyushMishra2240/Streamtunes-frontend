@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import { logoutUser } from "../api/authApi";
 
 const AuthContext = createContext(null);
 
@@ -27,7 +28,12 @@ export function AuthProvider({ children }) {
         setUser(userData);
     };
 
-    const logout = () => {
+    const logout = async () => {
+        try {
+            await logoutUser();
+        } catch (e) {
+            console.error("Failed to clear backend cookie", e);
+        }
         setUser(null);
     };
 
