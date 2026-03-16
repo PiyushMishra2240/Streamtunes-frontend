@@ -13,7 +13,7 @@ apiClient.interceptors.request.use((config) => {
     if (stored) {
       const { token } = JSON.parse(stored);
       if (token && config.headers) {
-        config.headers.set("Authorization", `Bearer ${token}`);
+        config.headers.Authorization = `Bearer ${token}`;
       }
     }
   } catch {
