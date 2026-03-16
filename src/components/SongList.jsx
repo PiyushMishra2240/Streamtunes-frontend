@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getSongs } from "../api/songsApi";
+import { getSongs, toggleLikeStatus } from "../api/songsApi";
 import { useAudioPlayer } from "../context/AudioPlayerContext";
 
 const SongList = () => {
@@ -94,6 +94,54 @@ const SongList = () => {
                   )}
                 </div>
               </div>
+
+              <button
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  const wasLiked = song.isLikedByCurrentUser;
+                  
+                  // Optimistic update
+                  setSongs((prevSongs) =>
+                    prevSongs.map((s) =>
+                      s.id === song.id ? { 
+                        ...s, 
+                        isLikedByCurrentUser: !wasLiked,
+                        likeCount: wasLiked ? s.likeCount - 1 : s.likeCount + 1
+                      } : s
+                    )
+                  );
+                  
+                  try {
+                    await toggleLikeStatus(song.id);
+                  } catch (err) {
+                    console.error("Failed to toggle like status", err);
+                    // Revert on failure
+                    setSongs((prevSongs) =>
+                      prevSongs.map((s) =>
+                        s.id === song.id ? { 
+                          ...s, 
+                          isLikedByCurrentUser: wasLiked,
+                          likeCount: wasLiked ? s.likeCount + 1 : s.likeCount - 1
+                        } : s
+                      )
+                    );
+                  }
+                }}
+                title={song.isLikedByCurrentUser ? "Unlike" : "Like"}
+                className="p-2 mr-2 rounded-full transition-colors shrink-0 hover:bg-white/10 flex items-center gap-1"
+              >
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill={song.isLikedByCurrentUser ? "currentColor" : "none"} 
+                  viewBox="0 0 24 24" 
+                  strokeWidth={1.5} 
+                  stroke="currentColor" 
+                  className={`w-5 h-5 ${song.isLikedByCurrentUser ? "text-red-500" : "text-gray-500"}`}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                </svg>
+                <span className="text-xs text-gray-500 min-w-[1rem]">{song.likeCount || 0}</span>
+              </button>
 
               {active && (
                 <span className="text-xs text-green-400 font-medium px-2 sm:px-3 py-1 bg-green-500/10 rounded-full animate-pulse shrink-0 hidden xs:inline">

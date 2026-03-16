@@ -43,6 +43,10 @@ export const toggleGlobalStatus = async (songId) => {
   return apiClient.patch(`/${songId}/toggle-global`);
 };
 
+export const toggleLikeStatus = async (songId) => {
+  return apiClient.post(`/${songId}/like`);
+};
+
 export const streamUrl = (id) => {
   const stored = localStorage.getItem("streamtunes_user");
   let tokenParam = "";
